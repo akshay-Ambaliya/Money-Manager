@@ -1,0 +1,4 @@
+// THINGS INCLUDED IN MONEY_MANAGER //
+
+1. Mail Sender
+2. Spring Security Authentication
