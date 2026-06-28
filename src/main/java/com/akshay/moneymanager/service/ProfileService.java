@@ -8,6 +8,7 @@ import com.akshay.moneymanager.repository.ProfileRepository;
 import com.akshay.moneymanager.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -80,14 +81,6 @@ public class ProfileService {
         return profileEntity.getIsActive();
     }
 
-
-    public ProfileEntity getCurrentProfile(){
-        Authentication authentication  = SecurityContextHolder.getContext().getAuthentication();
-        return profileRepository.findByEmail(authentication.getName())
-                .orElseThrow(()->new UsernameNotFoundException("Profile not found with email : "+ authentication.getName()));
-
-    }
-
     public ApiResponse authenticateAndGenerateToken(AuthDTO authDTO) {
 
         if (!isAccountActive(authDTO.getEmail())) {
@@ -125,5 +118,31 @@ public class ProfileService {
                     "Invalid email or password"
             );
         }
+    }
+
+    public ProfileEntity getCurrentProfile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return profileRepository.findByEmail(authentication.getName())
+                .orElseThrow(()-> new UsernameNotFoundException("Profile not found with email : "+authentication.getName()));
+
+    }
+
+    public ProfileDTO getPublicProfile(String email){
+        ProfileEntity currentUser= null;
+        if(email == null){
+            currentUser = getCurrentProfile();
+        }else{
+            currentUser = profileRepository.findByEmail(email)
+                    .orElseThrow(() ->  new UsernameNotFoundException("Profile not found with email : "+ email));
+        }
+
+        return ProfileDTO.builder()
+                .id(currentUser.getId())
+                .fullName(currentUser.getFullName())
+                .email(currentUser.getEmail())
+                .profileImageUrl(currentUser.getImageUrl())
+                .createdAt(currentUser.getCreatedAt())
+                .updatedAt(currentUser.getUpdateAt())
+                .build();
     }
 }

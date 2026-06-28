@@ -1,27 +1,30 @@
 package com.akshay.moneymanager.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ProfileDTO {
+@NoArgsConstructor
+@Builder
+public class CategoryDTO {
 
     private Long id;
-    private String fullName;
-    private String email;
-    private String password;
-    private String profileImageUrl;
-    private String activationToken;
+    private Long profileId;
+    private String name;
+
+    private String icon;
+
+    private String type;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
+
 
 }

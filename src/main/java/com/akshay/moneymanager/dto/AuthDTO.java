@@ -1,6 +1,5 @@
 package com.akshay.moneymanager.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @NoArgsConstructor
