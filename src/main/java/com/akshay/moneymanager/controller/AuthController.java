@@ -28,11 +28,6 @@ public class AuthController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @GetMapping("/test")
-    public String test(){
-        return "Test";
-    }
-
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody AuthDTO authDTO){
         ApiResponse response = profileService.authenticateAndGenerateToken(authDTO);

@@ -25,7 +25,6 @@ public class EmailService {
             message.setText(body);
             mailSender.send(message);
         }catch(Exception e){
-            e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
 
