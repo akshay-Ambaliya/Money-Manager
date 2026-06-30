@@ -74,9 +74,16 @@ public class CategoryService {
 
         CategoryEntity existingCategory = categoryRepository.findByIdAndProfileId(categoryId,profile.getId())
                 .orElseThrow(()-> new RuntimeException("Category not found or not accssible"));
-        existingCategory.setName(dto.getName());
-        existingCategory.setIcon(dto.getIcon());
-        existingCategory.setType(dto.getType());
+        if(dto.getIcon()!=null)
+            existingCategory.setIcon(dto.getIcon());
+
+        if(dto.getType()!=null)
+            existingCategory.setType(dto.getType());
+
+        if(dto.getName()!=null)
+            existingCategory.setName(dto.getName());
+
+
 
 
         return ApiResponse.builder()
