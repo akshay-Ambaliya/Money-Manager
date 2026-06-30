@@ -8,11 +8,13 @@ import com.akshay.moneymanager.entity.IncomeEntity;
 import com.akshay.moneymanager.entity.ProfileEntity;
 import com.akshay.moneymanager.exception.ResourceNotFoundException;
 import com.akshay.moneymanager.repository.CategoryRepository;
+import com.akshay.moneymanager.repository.ExpenseRepository;
 import com.akshay.moneymanager.repository.IncomeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +36,29 @@ public class IncomeService {
         IncomeEntity newExpense= toEntity(income, profile, category);
         newExpense = incomeRepository.save(newExpense);
         return toDTO(newExpense);
+    }
+
+    // Retrieve all the expenses for current month/based on the startDate and endDate
+    public List<IncomeDTO> getCurrentMonthExpensesForCurrentUser(){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.withDayOfMonth(1);
+        LocalDate endDate = now.withDayOfMonth(now.lengthOfMonth());
+        List<IncomeEntity> list = incomeRepository.findByProfileIdAndDateBetween(profile.getId(),startDate,endDate);
+        return list.stream().map(this::toDTO).toList();
+    }
+
+    // Delete expense by id for current user
+    public void deleteIncome(Long incomeId){
+        ProfileEntity profile =  profileService.getCurrentProfile();
+        IncomeEntity entity = incomeRepository. findById(incomeId)
+                .orElseThrow(()-> new ResourceNotFoundException("Income Not found with id : "+incomeId));
+
+        if(!entity.getProfile().getId().equals(profile.getId())){
+            throw new RuntimeException("Unauthorized to delete this income");
+        }
+
+        incomeRepository.delete(entity);
     }
 
     private IncomeEntity toEntity(IncomeDTO dto, ProfileEntity profileEntity, CategoryEntity category){

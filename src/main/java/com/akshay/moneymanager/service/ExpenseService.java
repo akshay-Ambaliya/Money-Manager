@@ -37,7 +37,28 @@ public class ExpenseService {
         return toDTO(newExpense);
     }
 
+    // Retrieve all the incomes for current month/based on the startDate and endDate
+    public List<ExpenseDTO> getCurrentMonthExpensesForCurrentUser(){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.withDayOfMonth(1);
+        LocalDate endDate = now.withDayOfMonth(now.lengthOfMonth());
+        List<ExpenseEntity> list = expenseRepository.findByProfileIdAndDateBetween(profile.getId(),startDate,endDate);
+        return list.stream().map(this::toDTO).toList();
+    }
 
+    // Delete expense by id for current user
+    public void deleteExpense(Long expenseId){
+        ProfileEntity profile =  profileService.getCurrentProfile();
+        ExpenseEntity entity = expenseRepository. findById(expenseId)
+                .orElseThrow(()-> new ResourceNotFoundException("Expense Not found with id : "+expenseId));
+
+        if(!entity.getProfile().getId().equals(profile.getId())){
+            throw new RuntimeException("Unauthorized to delete this expense");
+        }
+
+        expenseRepository.delete(entity);
+    }
     private ExpenseEntity toEntity(ExpenseDTO dto, ProfileEntity profileEntity, CategoryEntity category){
 
         return ExpenseEntity.builder()
