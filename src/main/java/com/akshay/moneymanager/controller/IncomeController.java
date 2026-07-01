@@ -31,7 +31,7 @@ public class IncomeController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteIncome(
             @PathVariable Long id
     ){

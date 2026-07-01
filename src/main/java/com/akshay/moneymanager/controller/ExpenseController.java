@@ -32,7 +32,7 @@ public class ExpenseController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteExpense(
             @PathVariable Long id
     ){
