@@ -17,7 +17,7 @@ public class ApiResponse {
 
     private HttpStatus status;
     private Object data;
-    private LocalDateTime time;
+    private LocalDateTime time = LocalDateTime.now();
     private Boolean success;
     private String message;
 
