@@ -1,10 +1,12 @@
 package com.akshay.moneymanager.controller;
 
+import com.akshay.moneymanager.dto.ApiResponse;
 import com.akshay.moneymanager.dto.ExpenseDTO;
 import com.akshay.moneymanager.dto.IncomeDTO;
 import com.akshay.moneymanager.service.ExpenseService;
 import com.akshay.moneymanager.service.IncomeService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,22 +21,22 @@ public class ExpenseController {
     private final ExpenseService expenseService;
 
     @PostMapping
-    public ResponseEntity<ExpenseDTO> addIncome(@RequestBody ExpenseDTO dto){
-        ExpenseDTO saved =  expenseService.addExpense(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    public ResponseEntity<ApiResponse> addIncome(@RequestBody ExpenseDTO dto){
+        ApiResponse response =  expenseService.addExpense(dto);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<ExpenseDTO>> getExpenses(){
-        List<ExpenseDTO> expenses = expenseService.getCurrentMonthExpensesForCurrentUser();
-        return ResponseEntity.ok(expenses);
+    public ResponseEntity<ApiResponse> getExpenses(){
+        ApiResponse response = expenseService.getCurrentMonthExpensesForCurrentUser();
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @DeleteMapping("{/id}")
-    public ResponseEntity<Void> deleteExpense(
+    public ResponseEntity<ApiResponse> deleteExpense(
             @PathVariable Long id
     ){
-        expenseService.deleteExpense(id);
-        return ResponseEntity.noContent().build();
+        ApiResponse response = expenseService.deleteExpense(id);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

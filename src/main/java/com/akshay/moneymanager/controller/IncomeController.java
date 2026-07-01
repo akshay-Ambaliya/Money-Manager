@@ -1,5 +1,6 @@
 package com.akshay.moneymanager.controller;
 
+import com.akshay.moneymanager.dto.ApiResponse;
 import com.akshay.moneymanager.dto.IncomeDTO;
 import com.akshay.moneymanager.repository.ExpenseRepository;
 import com.akshay.moneymanager.repository.IncomeRepository;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,23 +20,22 @@ public class IncomeController {
 
     private final IncomeService incomeService;
     @PostMapping
-    public ResponseEntity<IncomeDTO> addIncome(@RequestBody IncomeDTO dto){
-        IncomeDTO saved =  incomeService.addIncome(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    public ResponseEntity<ApiResponse> addIncome(@RequestBody IncomeDTO dto){
+        ApiResponse response = incomeService.addIncome(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<IncomeDTO>> getIncomes(){
-        List<IncomeDTO> incomes = incomeService.getCurrentMonthExpensesForCurrentUser();
-        return ResponseEntity.ok(incomes);
+    public ResponseEntity<ApiResponse> getIncomes(){
+        ApiResponse response = incomeService.getCurrentMonthExpensesForCurrentUser();
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @DeleteMapping("{/id}")
-    public ResponseEntity<Void> deleteIncome(
+    public ResponseEntity<ApiResponse> deleteIncome(
             @PathVariable Long id
     ){
-        incomeService.deleteIncome(id);
-        return ResponseEntity.noContent().build();
+        ApiResponse response = incomeService.deleteIncome(id);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
-
 }
