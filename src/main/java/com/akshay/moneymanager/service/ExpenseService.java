@@ -98,6 +98,12 @@ public class ExpenseService {
         return total!=null?total:BigDecimal.ZERO;
     }
 
+    //Notifications
+    public List<ExpenseDTO> getExpensesForUserOnDate(Long profileId, LocalDate date) {
+        List<ExpenseEntity> list = expenseRepository.findByProfileIdAndDate(profileId, date);
+        return list.stream().map(this::toDTO).toList();
+    }
+
     private ExpenseEntity toEntity(ExpenseDTO dto, ProfileEntity profileEntity, CategoryEntity category){
 
         return ExpenseEntity.builder()

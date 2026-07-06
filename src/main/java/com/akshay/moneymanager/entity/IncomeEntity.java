@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -26,7 +26,7 @@ public class IncomeEntity extends BaseEntity    {
     private LocalDate date;
 
     @Column(name = "amount", nullable = false, length = 20)
-    private String amount;
+    private BigDecimal amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
