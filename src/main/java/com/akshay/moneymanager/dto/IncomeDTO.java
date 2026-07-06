@@ -2,6 +2,7 @@ package com.akshay.moneymanager.dto;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -16,7 +17,7 @@ public class IncomeDTO {
     private String name;
     private String icon;
     private LocalDate date;
-    private String amount;
+    private BigDecimal amount;
     private Long categoryId;
     private Long profileId;
 
