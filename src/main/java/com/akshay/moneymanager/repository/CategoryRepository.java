@@ -1,7 +1,6 @@
 package com.akshay.moneymanager.repository;
 
 import com.akshay.moneymanager.entity.CategoryEntity;
-import jdk.jfr.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
