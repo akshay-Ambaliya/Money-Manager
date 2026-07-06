@@ -1,15 +1,12 @@
 package com.akshay.moneymanager.service;
 
 import com.akshay.moneymanager.dto.ApiResponse;
-import com.akshay.moneymanager.dto.ExpenseDTO;
 import com.akshay.moneymanager.dto.IncomeDTO;
 import com.akshay.moneymanager.entity.CategoryEntity;
-import com.akshay.moneymanager.entity.ExpenseEntity;
 import com.akshay.moneymanager.entity.IncomeEntity;
 import com.akshay.moneymanager.entity.ProfileEntity;
 import com.akshay.moneymanager.exception.ResourceNotFoundException;
 import com.akshay.moneymanager.repository.CategoryRepository;
-import com.akshay.moneymanager.repository.ExpenseRepository;
 import com.akshay.moneymanager.repository.IncomeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

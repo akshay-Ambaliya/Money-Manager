@@ -8,7 +8,6 @@ import com.akshay.moneymanager.repository.ProfileRepository;
 import com.akshay.moneymanager.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
