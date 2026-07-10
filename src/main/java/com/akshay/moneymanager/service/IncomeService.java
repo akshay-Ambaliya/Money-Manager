@@ -45,8 +45,8 @@ public class IncomeService {
                 .build();
     }
 
-    // Retrieve all the expenses for current month/based on the startDate and endDate
-    public ApiResponse getCurrentMonthExpensesForCurrentUser(){
+    // Retrieve all the incomes for current month/based on the startDate and endDate
+    public ApiResponse getCurrentMonthIncomesForCurrentUser(){
         ProfileEntity profile = profileService.getCurrentProfile();
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.withDayOfMonth(1);

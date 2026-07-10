@@ -23,7 +23,7 @@ public class IncomeController {
 
     @GetMapping
     public ResponseEntity<ApiResponse> getIncomes(){
-        ApiResponse response = incomeService.getCurrentMonthExpensesForCurrentUser();
+        ApiResponse response = incomeService.getCurrentMonthIncomesForCurrentUser();
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
