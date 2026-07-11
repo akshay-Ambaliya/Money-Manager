@@ -1,8 +1,7 @@
 package com.akshay.moneymanager.service;
 
+import com.akshay.moneymanager.dto.ExpenseDTO;
 import com.akshay.moneymanager.dto.IncomeDTO;
-import com.akshay.moneymanager.entity.ExpenseEntity;
-import com.akshay.moneymanager.entity.IncomeEntity;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -16,7 +15,7 @@ import java.util.stream.IntStream;
 
 @Service
 public class ExcelService {
-    public void writeIncomeToExcel(OutputStream outputStream, List<IncomeEntity> incomes) throws Exception{
+public void writeIncomeToExcel(OutputStream outputStream, List<IncomeDTO> incomes) throws Exception{
         try(Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Incomes");
             Row header = sheet.createRow(0);
@@ -28,7 +27,7 @@ public class ExcelService {
 
             IntStream.range(0, incomes.size()).forEach(i -> {
 
-                IncomeEntity income = incomes.get(i);
+                IncomeDTO income = incomes.get(i);
 
                 Row row = sheet.createRow(i + 1);
 
@@ -39,8 +38,8 @@ public class ExcelService {
                 );
 
                 row.createCell(2).setCellValue(
-                        income.getCategory() != null
-                                ? String.valueOf(income.getCategory().getId())
+                        income.getCategoryId() != null
+                                ? String.valueOf(income.getCategoryId())
                                 : "N/A"
                 );
 
@@ -61,7 +60,7 @@ public class ExcelService {
         }
     }
 
-    public void writeExpensesToExcel(OutputStream outputStream, List<ExpenseEntity> expenses) throws IOException {
+    public void writeExpensesToExcel(OutputStream outputStream, List<ExpenseDTO> expenses) throws IOException {
         try(Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Expenses");
             Row header = sheet.createRow(0);
@@ -73,7 +72,7 @@ public class ExcelService {
 
             IntStream.range(0, expenses.size()).forEach(i -> {
 
-                ExpenseEntity expense = expenses.get(i);
+                ExpenseDTO expense = expenses.get(i);
 
                 Row row = sheet.createRow(i + 1);
 
@@ -84,8 +83,8 @@ public class ExcelService {
                 );
 
                 row.createCell(2).setCellValue(
-                        expense.getCategory() != null
-                                ? String.valueOf(expense.getCategory().getId())
+                        expense.getCategoryId() != null
+                                ? String.valueOf(expense.getCategoryId())
                                 : "N/A"
                 );
 

@@ -1,7 +1,7 @@
 package com.akshay.moneymanager.controller;
 
-import com.akshay.moneymanager.entity.ExpenseEntity;
-import com.akshay.moneymanager.entity.IncomeEntity;
+import com.akshay.moneymanager.dto.ExpenseDTO;
+import com.akshay.moneymanager.dto.IncomeDTO;
 import com.akshay.moneymanager.service.ExcelService;
 import com.akshay.moneymanager.service.ExpenseService;
 import com.akshay.moneymanager.service.IncomeService;
@@ -27,13 +27,13 @@ public class ExcelController {
     public void downloadIncomeExcel(HttpServletResponse response) throws Exception {
         response.setContentType("application/vnd.open-xmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=income.xlsx");
-        excelService.writeIncomeToExcel(response.getOutputStream(),(List<IncomeEntity>) incomeService.getCurrentMonthIncomesForCurrentUser().getData());
+        excelService.writeIncomeToExcel(response.getOutputStream(),(List<IncomeDTO>) incomeService.getCurrentMonthIncomesForCurrentUser().getData());
     }
 
-    @GetMapping("/download/income")
+    @GetMapping("/download/expense")
     public void downloadExpenseExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.open-xmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=expense.xlsx");
-        excelService.writeExpensesToExcel(response.getOutputStream(),(List<ExpenseEntity>)expenseService.getCurrentMonthExpensesForCurrentUser().getData());
+        excelService.writeExpensesToExcel(response.getOutputStream(),(List<ExpenseDTO>)expenseService.getCurrentMonthExpensesForCurrentUser().getData());
     }
 }
