@@ -2,6 +2,7 @@ package com.akshay.moneymanager.repository;
 
 import com.akshay.moneymanager.entity.CategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +20,5 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
 
     Boolean existsByNameAndProfileId(String name, Long profileId);
 
+    Optional<Object> findByNameIgnoreCaseAndProfileIdAndIdNot(String name, Long profileId, Long id);
 }

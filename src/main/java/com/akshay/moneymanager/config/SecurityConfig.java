@@ -34,9 +34,12 @@ public class SecurityConfig {
                 csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Allow anyone to access the login/register endpoints without authentication
-                        .requestMatchers("/auth/**").permitAll()
-
-                        // Every other request must be fully authenticated
+                        .requestMatchers(
+                                "/auth/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 // explicitly telling Spring Security never to create or use an HttpSession
@@ -71,6 +74,5 @@ public class SecurityConfig {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailService);
         provider.setPasswordEncoder(createPasswordEncoder());
         return new ProviderManager(provider);
-
     }
 }
