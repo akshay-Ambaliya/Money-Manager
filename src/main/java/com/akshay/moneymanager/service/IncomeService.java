@@ -9,6 +9,7 @@ import com.akshay.moneymanager.exception.ResourceNotFoundException;
 import com.akshay.moneymanager.repository.CategoryRepository;
 import com.akshay.moneymanager.repository.IncomeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +94,18 @@ public class IncomeService {
         ProfileEntity profile = profileService.getCurrentProfile();
         BigDecimal total = incomeRepository.findTotalExpenseByProfileId(profile.getId());
         return total!=null?total:BigDecimal.ZERO;
+    }
+
+    // Filter Incomes
+    public  ApiResponse filterIncomes(LocalDate startDate, LocalDate endDate, String keyword, Sort sort){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        List<IncomeEntity> list = incomeRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(profile.getId(),startDate,endDate,keyword,sort);
+        return ApiResponse.builder()
+                .time(LocalDateTime.now())
+                .success(true)
+                .message("Expenses Fetched Successfully")
+                .data(list.stream().map(this::toDTO).toList())
+                .build();
     }
 
     // Helper Methods

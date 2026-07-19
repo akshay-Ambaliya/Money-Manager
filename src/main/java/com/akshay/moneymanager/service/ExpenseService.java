@@ -9,6 +9,7 @@ import com.akshay.moneymanager.exception.ResourceNotFoundException;
 import com.akshay.moneymanager.repository.CategoryRepository;
 import com.akshay.moneymanager.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -102,6 +103,19 @@ public class ExpenseService {
     public List<ExpenseDTO> getExpensesForUserOnDate(Long profileId, LocalDate date) {
         List<ExpenseEntity> list = expenseRepository.findByProfileIdAndDate(profileId, date);
         return list.stream().map(this::toDTO).toList();
+    }
+
+
+    // Filter expenses
+    public  ApiResponse filterExpense(LocalDate startDate, LocalDate endDate, String keyword, Sort sort){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        List<ExpenseEntity> list = expenseRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(profile.getId(),startDate,endDate,keyword,sort);
+        return ApiResponse.builder()
+                .time(LocalDateTime.now())
+                .success(true)
+                .message("Expenses Fetched Successfully")
+                .data(list.stream().map(this::toDTO).toList())
+                .build();
     }
 
     private ExpenseEntity toEntity(ExpenseDTO dto, ProfileEntity profileEntity, CategoryEntity category){
