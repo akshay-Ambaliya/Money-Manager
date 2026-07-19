@@ -114,6 +114,7 @@ public class ExpenseService {
                 .time(LocalDateTime.now())
                 .success(true)
                 .message("Expenses Fetched Successfully")
+                .status(HttpStatus.OK)
                 .data(list.stream().map(this::toDTO).toList())
                 .build();
     }

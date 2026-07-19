@@ -8,6 +8,7 @@ import com.akshay.moneymanager.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -67,23 +68,28 @@ public class CategoryService {
                 .build();
     }
 
+    @Transactional
     public ApiResponse updateCategory(Long categoryId, CategoryDTO dto){
         ProfileEntity profile = profileService.getCurrentProfile();
-        categoryRepository.findByIdAndProfileId(categoryId,profile.getId());
 
         CategoryEntity existingCategory = categoryRepository.findByIdAndProfileId(categoryId,profile.getId())
                 .orElseThrow(()-> new RuntimeException("Category not found or not accssible"));
+
         if(dto.getIcon()!=null)
             existingCategory.setIcon(dto.getIcon());
 
         if(dto.getType()!=null)
             existingCategory.setType(dto.getType());
 
-        if(dto.getName()!=null)
+        if (categoryRepository.findByNameIgnoreCaseAndProfileIdAndIdNot(
+                dto.getName(),
+                profile.getId(),
+                categoryId
+        ).isPresent()) {
+            throw new RuntimeException("Category already exists.");
+        }else{
             existingCategory.setName(dto.getName());
-
-
-
+        }
 
         return ApiResponse.builder()
                 .data(toDto(categoryRepository.save(existingCategory)))

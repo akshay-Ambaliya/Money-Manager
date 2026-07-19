@@ -30,7 +30,12 @@ public class JWTfilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         // Skip public endpoints
-        if (request.getServletPath().startsWith("/auth")) {
+        String path = request.getServletPath();
+
+        if (path.startsWith("/auth")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")) {
+
             filterChain.doFilter(request, response);
             return;
         }

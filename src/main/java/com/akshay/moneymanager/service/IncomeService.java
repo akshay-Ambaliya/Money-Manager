@@ -103,6 +103,7 @@ public class IncomeService {
         return ApiResponse.builder()
                 .time(LocalDateTime.now())
                 .success(true)
+                .status(HttpStatus.OK)
                 .message("Expenses Fetched Successfully")
                 .data(list.stream().map(this::toDTO).toList())
                 .build();
