@@ -5,11 +5,13 @@ import com.akshay.moneymanager.dto.AuthDTO;
 import com.akshay.moneymanager.dto.ProfileDTO;
 import com.akshay.moneymanager.service.ProfileService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -30,6 +32,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody AuthDTO authDTO){
+        log.info("Entered");
         ApiResponse response = profileService.authenticateAndGenerateToken(authDTO);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
