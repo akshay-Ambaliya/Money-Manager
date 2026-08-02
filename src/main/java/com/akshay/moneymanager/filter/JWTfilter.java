@@ -29,6 +29,8 @@ public class JWTfilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        System.out.println(request.getMethod() + " " + request.getServletPath());
+
         // Skip public endpoints
         String path = request.getServletPath();
 
