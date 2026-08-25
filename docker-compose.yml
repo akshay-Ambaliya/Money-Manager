@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # =========================================================
+  # MySQL Database Service
+  # =========================================================
+  db:
+    image: mysql:8.0
+    container_name: moneymanager-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpass}
+      MYSQL_DATABASE: money_manager
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # =========================================================
+  # Spring Boot Backend Service
+  # =========================================================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: moneymanager-backend
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      # Override localhost with container service name 'db'
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/money_manager
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD:-rootpass}
+      JWT_SECRET: ${JWT_SECRET:-defaultSecretKey12345678901234567890}
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-your_email@gmail.com}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-your_email_app_password}
+      MAIL_FROM_EMAIL: ${MAIL_FROM_EMAIL:-your_email@gmail.com}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
