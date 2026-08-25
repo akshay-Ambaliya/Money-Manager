@@ -44,6 +44,7 @@ services:
       MAIL_PASSWORD: ${MAIL_PASSWORD:-your_email_app_password}
       MAIL_FROM_EMAIL: ${MAIL_FROM_EMAIL:-your_email@gmail.com}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+      BACKEND_URL: ${BACKEND_URL:-http://localhost:8081}
     depends_on:
       db:
         condition: service_healthy

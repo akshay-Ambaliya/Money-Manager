@@ -14,6 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class ProfileService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+
+    @Value("${money.manager.backend.url}")
+    private String backendUrl;
+
     public ApiResponse registerUser(ProfileDTO profileDTO){
 
         if(profileRepository.existsByEmail(profileDTO.getEmail())){
@@ -45,7 +50,7 @@ public class ProfileService {
         profile.setPassword(passwordEncoder.encode(profileDTO.getPassword()));
         profileRepository.save(profile);
 
-        String activationLink = "http://localhost:8081/api/v1/auth/profile/activate?token="+profile.getActivationToken();
+        String activationLink = backendUrl + "/api/v1/auth/profile/activate?token="+profile.getActivationToken();
         String subject = "Activate your money manager account";
         String body = "Click on the following link to activate your account : "+activationLink;
 
