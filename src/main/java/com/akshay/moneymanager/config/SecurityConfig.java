@@ -3,6 +3,7 @@ package com.akshay.moneymanager.config;
 import com.akshay.moneymanager.filter.JWTfilter;
 import com.akshay.moneymanager.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,9 @@ public class SecurityConfig {
 
     private final CustomUserDetailService userDetailService;
     private final JWTfilter jwTfilter;
+
+    @Value("${money.manager.frontend.url}")
+    private String frontendUrl;
     @Bean
     public SecurityFilterChain createSecurityFilterChain(HttpSecurity http){
         http.
@@ -58,7 +62,11 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        if (frontendUrl != null && !frontendUrl.trim().isEmpty() && !frontendUrl.equals("http://localhost:5173")) {
+            configuration.setAllowedOrigins(List.of("http://localhost:5173", frontendUrl));
+        } else {
+            configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        }
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // if you use cookies; otherwise false is also fine
