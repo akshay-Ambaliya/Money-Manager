@@ -37,6 +37,7 @@ public class JWTfilter extends OncePerRequestFilter {
         if (path.equals("/auth/login")
                 || path.equals("/auth/register")
                 || path.equals("/auth/profile/activate")
+                || path.equals("/health")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")) {
 

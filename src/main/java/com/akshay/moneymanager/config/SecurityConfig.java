@@ -40,10 +40,11 @@ public class SecurityConfig {
                 csrf(csrf -> csrf.disable())
                 .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
-                        // Allow anyone to access the login/register/activate endpoints without authentication
+                        // Allow anyone to access the login/register/activate/health endpoints without authentication
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/profile/activate").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/health").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // Every other request must be fully authenticated
